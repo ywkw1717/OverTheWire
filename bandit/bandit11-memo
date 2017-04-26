@@ -1,0 +1,12 @@
+sshすると、data.txt
+ファイルサイズは明らかに小さかったので、cat
+するとbase64らしきもので暗号化されている文字列が表示されたので、
+
+echo "VGhlIHBhc3N3b3JkIGlzIElGdWt3S0dzRlc4TU9xM0lSRnFyeEUxaHhUTkViVVBSCg==" |base64 -d
+
+としておしまい
+
+'The password is IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR\n'
+
+よって、IFukwKGsFW8MOq3IRFqrxE1hxTNEbUPR
+

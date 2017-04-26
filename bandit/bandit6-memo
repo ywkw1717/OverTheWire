@@ -1,0 +1,6 @@
+ssh, inhereにcd　するとmaybehere00〜maybehere19までのディレクトリがあり,恐らくfindして探すんだろうなと思ったが
+findの指定がいまいちうまくいかず、結局量も少なかったため一からcdして怪しそうなファイルを探していく
+ヒントにはサイズが1033とあったので、隠しファイルも表示するようにls -laで見ていく
+すると、maybehere07にて .file2というファイルのサイズが1033であったのでcatしておしまい
+
+DXjZPULLxYr17uwoI01bNLQbtFemEgo7

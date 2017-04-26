@@ -1,0 +1,11 @@
+sshするとまたもや,data.txt
+今回はしっかりと最初に問題文に目を通してみると、一回しか出てこない一行がパスワードらしい
+lessしてみると、確かに重複しているものばかり
+
+uniqで重複を取り除くのだろうと考え、cat data.txt |uniq -u (オプションなしだと一つにまとめるだけ、uオプションはまとめるのではなく、削除する)
+
+だが、uniqは”連続して重複している行”を１つにまとめるコマンド
+
+よって、sortしてあげる必要があるので、uniqの前にsortを挟み、cat data.txt |sort |uniq -u でおしまい
+
+UsvVyFSfZZWbi6wgC7dAFyFuR6jQQUhR

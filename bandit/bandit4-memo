@@ -1,0 +1,7 @@
+sshすると、inhereというディレクトリがあるので、とりあえず移動
+
+lsしてみるとなにもないので、どうせ隠しファイルだろうと-aオプションをつけてls
+
+案の定「.hidden」というファイルがあったのでcatしておしまい
+
+pIwrPrtPN36QITSp3EQaw936yaFoFgAB

@@ -1,0 +1,24 @@
+問題文には一つのプログラムが、ジョブスケジューラに従ったタイムのcronで動いている、とある
+さらに、形式や何のコマンドが実行されているのかの為に/etc/cron.dを見ろとあったので、見てみる
+
+ls -lしてみると、いろんなファイルがある
+
+怪しそうな、cronjob_bandit22というものがあったのでcatしてみると
+
+* * * * * bandit22 /usr/bin/cronjob_bandit22.sh &> /dev/null
+
+よって、/usr/bin/cronjob_bandit22.shというシェルスクリプトが常時動いているのがわかる
+
+/usr/bin/cronjob_bandit22.shをcatしてみると、
+
+#!/bin/bash
+chmod 644 /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+cat /etc/bandit_pass/bandit22 > /tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgv
+
+/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvのパーミッションを変えてくれて、そこにbandit22のパスをリダイレクトしてくれているらしい
+
+よって、/tmp/t7O6lds9S0RqQh9aMcz6ShpAoZKF7fgvを cat しておしまい
+
+Yk7owGAcWjwMVRwrTesJEwB7WVOiILLI
+
+

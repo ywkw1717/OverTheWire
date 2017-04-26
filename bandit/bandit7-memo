@@ -1,0 +1,16 @@
+sshするとなにもないので、問題文を見てみる
+すると「このサーバーのどこかにあるよ、所有者はbandit7, group名はbandit6, ファイルサイズは33bytes」と丁寧にかかれていたので
+ファイルサイズが33で, /からfindしてみると、/etc/bandit_pass/bandit7というファイルが目に入ったので、見ようとしてみるとpermission denied、引っかかった
+
+もう一度findについて調べてみると、-user ユーザ名　で指定したユーザが保有しているファイル・ディレクトリを検索できるらしい　find万歳！
+ってことで/にて、find ./ -user bandit7としてみると、大量のPermission deniedが表示されて面倒だったので、2>/dev/nullで処理
+find ./ -user bandit7 2>/dev/null すると、先ほど見た/etc/bandit_pass/bandit7というファイルの他にもう一つ、./var/lib/dpkg/info/bandit7.passwordというファイルが見つかる
+
+よって、ls -lしてみると、ファイルサイズは33bytes、所有者bandit7, group名はbandit6、とバッチリ一致したので、catしておしまい
+
+HKBPTKQnIay4Fw76bEy8PVxKEDQRKTzs
+
+以下のサイトが非常に参考になった。有難や・・・
+
+http://orebibou.com/2015/03/find%E3%82%B3%E3%83%9E%E3%83%B3%E3%83%89%E3%81%A7%E8%A6%9A%E3%81%88%E3%81%A6%E3%81%8A%E3%81%8D%E3%81%9F%E3%81%84%E4%BD%BF%E3%81%84%E6%96%B912%E5%80%8B/
+

@@ -1,0 +1,13 @@
+sshすると、sshkey.privateというRSAの秘密鍵が与えられている
+問題文には、次のレベルへのパスワードは/etc/bandit_pass/bandit14にあり、これはbandit14しか読めないとなっている
+よって、private SSH keyがあるから、これ使ってbandit14としてsshして、/etc/bandit_pass/bandit14を読んでね　という問題
+
+鍵を指定してsshする方法は知らなかったのでググった
+
+すると、https://support.rackspace.com/how-to/logging-in-with-an-ssh-private-key-on-linuxmac/ のサイトが非常に役に立った
+
+これを元に、ssh -i sshkey.private bandit14@localhost としてssh
+
+するとbandit14としてアクセスすることができ、あとはパスワードを読むだけ
+
+4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e

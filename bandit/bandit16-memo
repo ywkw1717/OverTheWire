@@ -1,0 +1,47 @@
+今回は前回と似ていて、現在のレベルのパスワードをlocalhostのport30001番に渡せば良いのだが、SSL encryption、つまりSSL暗号化で渡さなければならない
+
+自分は最初、.bandit14.passwordファイルをssl暗号化して渡すのだろうかと
+
+openssl aes-256-cbc -d -in .bandit14.password -pass file:.bandit14.password とか無駄なことをやってしまっていた
+
+途中でs_clientの存在に気づき、
+
+echo "4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e" |openssl s_client -connect localhost:30001
+    ↑ bandit14のパス
+とやっていて、証明書情報とその下にDONEとレスポンスが返ってくるだけで、なんだこれは、と思っていた
+
+そこで、確か/etc/bandit_pass/とかで自分のパスが見れるはずだったので、bandit15のパスを表示してみた
+
+BfMYroe26WYalil77FoDi9qh59eK5xNr
+
+違うやんけ
+
+ってことで、
+
+echo "BfMYroe26WYalil77FoDi9qh59eK5xNr" |openssl s_client -connect localhost:30001
+
+として、これでいけるだろと思ったが、HEARTBEATINGというレスポンスが増えただけで、パスワードは貰えない
+
+もう一度問題文を読んでみると、どうやらHEARTBEATINGとなる時は、-ign_eofというオプションを使えとある
+
+よって、
+
+echo "BfMYroe26WYalil77FoDi9qh59eK5xNr" |openssl s_client -ign_eof -connect localhost:30001
+
+としてみたところ、
+
+---
+Correct!
+cluFn7wTiGryunymYOu4RcffSxQluehd
+
+read:errno=0
+
+というレスポンスをいただくことができ万々歳だった
+
+
+どうやら、s_clientの -ign_eof オプションというのは、EOF(end of file)がinputに達した時に接続を切断するのを禁止するらしい
+ignore eof、ファイルの終わりを無視するという意味だった
+
+https://www.openssl.org/docs/manmaster/apps/s_client.html
+
+

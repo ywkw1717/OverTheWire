@@ -1,0 +1,18 @@
+sshすると、.sshがあり、その中にauthorized_keysがあり、sshの仕組みがまだよく理解できていない自分は試行錯誤していた
+
+だが、authorized_keysというのは公開鍵を置いておく場所であり、前問でsshしたときにこの公開鍵があるためアクセスできたということだった（ほんと自分がアホだと・・）
+
+問題文には、次のパスワードは現在のレベルのパスワードをlocalhostのport30000番に提出すればいいとあったが、「どうやって提出すんの・・・？」と少し考えた結果、「echoでええやん」という結論に至り、
+
+echo "4wcYUJFw0k0XLShlDzztnTBHiqxU3b3e" |nc localhost 30000
+
+としたところ
+
+Correct!
+BfMYroe26WYalil77FoDi9qh59eK5xNr
+
+と、レスポンスが返ってきた
+
+よって、BfMYroe26WYalil77FoDi9qh59eK5xNr
+
+

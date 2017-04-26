@@ -1,0 +1,30 @@
+この問題で詰まって結局寝てしまった
+
+起きてからもう一度問題文を読みなおしてみる
+
+"bandit18にログインしようとするときByebye!と表示されるなら、それは次のレベルbandit19と関係しているよ"
+
+ということで、bandit19の問題文を見てみる
+
+"次のレベルのパスワードはホームディレクトリのreadmeファイルにあるよ、でも誰かが、.bashrcを修正してsshでログインするときにログアウトするようにしてしまった"らしい
+
+なんて野郎だ、と思ったがsshするときにreadmeを読み出せればいいんじゃねと思いsshコマンドについてもう一度調べてみる
+
+すると、ssh hogehost ls -al とかでコマンド実行できるらしい
+https://hydrocul.github.io/wiki/commands/ssh.html
+
+やった、ということで
+
+ssh bandit18@bandit.labs.overthewire.org ls -al としてみると readmeファイルが見つかったので
+
+ssh bandit18@bandit.labs.overthewire.org cat readme でおしまい
+
+IueksS7Ubh8G3DCwVzrTd8rAVOwq3M5x
+
+
+最初は眠気からか、"bandit18にログインしようとするとき"という英文をbandit18のログ、つまりsshのログを見るのか・・？とか思って
+ローカルの/etc/ssh/ssh_condigのLOGLEVELを設定したりと、変なことをやってしまっていた
+
+
+
+できない時は寝るのが一番

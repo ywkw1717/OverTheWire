@@ -1,0 +1,5 @@
+sshすると、spaces in this filenameというファイルがあり、それにパスワードがあるらしい
+
+空白をどう処理するかを問いているのだろが、bashの補完機能を使えば一発なのでtabで補完してcatでおわり
+
+UmHadQclWmgdLOKQ3YNgjWxGoRMb5luK

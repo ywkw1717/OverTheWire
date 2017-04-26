@@ -1,0 +1,10 @@
+またもやdata.txt
+
+catすると、なにやらrot13らしき文字列
+
+pythonは入っているようなので、pythonを起動して、
+>> a = "Gur cnffjbeq vf 5Gr8L4qetPEsPk8htqjhRK8XSP6x2RHh"
+>> a.decode("rot13")
+u'The password is 5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu'
+
+よって、5Te8Y4drgCRfCx8ugdwuEX8KFC6k2EUu

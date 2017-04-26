@@ -1,0 +1,3 @@
+password.newとpassword.oldのdiffを取ったものがbandit18のパスワード(kfBf3eYk5BPBRzwjqutbbfE887SVc5Yd)なのだが、これでsshしようとしてもByebye!と表示されてすぐ切断されてしまう
+
+→ bandit19-memoへ

@@ -1,0 +1,6 @@
+sshすると、data.txt
+lessしようとしたら、binary fileですけどいいですか？と聞かれてバイナリファイルだと判明
+バイナリファイルであれば、表示可能文字を出力してくれるstringsコマンドがある
+よってstringsして、banditのパスワードは毎回32文字であり、それらしき文字列がすぐ見つかるのでおしまい
+
+truKLdjsbJ5g7yyJ2X2R0o3a5HQJFuLk

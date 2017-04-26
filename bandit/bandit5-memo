@@ -1,0 +1,9 @@
+sshすると前回と同様、inhereディレクトリ
+
+移動してlsしてみると、「-file00」から「-file09」までのファイルがある
+
+"-"がついたファイルの処理はbandit2辺りで学んだので、file -- -file00としてみる
+するとバイナリであったのでcatしても無駄
+一応、--file09まで調べてみると、--file07だけがテキストファイルだったのでcatしておわり
+
+koReBOKuIDDepwhWk7jZC0RTdopnAYKh

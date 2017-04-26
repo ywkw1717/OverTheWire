@@ -1,0 +1,67 @@
+最後の問題だけあって全然できなかった
+
+ssh すると、ホームディレクトリにはbandit26の秘密鍵があるので、これを使って、bandit26にsshする
+
+だが、すぐ切断されてしまって、なにもできない
+
+前に似た問題があったなと、ssh して、任意のコマンド（ls）を実行してみたができない
+
+前にコマンドを移し、パイプする形で実行してみると、
+
+ls -al |ssh -i bandit26.sshkey bandit26@localhost
+
+::::::::::::::
+/home/bandit26/text.txt
+::::::::::::::
+
+text.txtがあるのがわかったがよくわからない
+
+どういうことだと思い、問題文を読んでみると、どうやらbandit26では、shellがbashではない「何か」になっているらしい
+
+/etc/shells を確認してみると、使えるshellが確認できるが、その中に、/usr/bin/showtext というshellが確認でき、cat してみると
+
+#!/bin/sh
+
+more ~/text.txt
+exit 0
+
+となっていて、先ほどのtext.txt を more しているらしい
+
+ここで、このシェルを ssh するときにログインシェルにするのではないかとか考えてしまい
+
+ssh -i bandit26.sshkey bandit26@localhost -t /usr/bin/showtext などとしてしまっていた
+
+もう一度考え直すと、これ向こうのシェルがshowtextなんだから、ログインした時点でtext.txtがmoreされている？と思ったのだが、
+
+ssh -i bandit26.sshkey bandit26@localhost
+
+としても全くできない
+
+
+期限は今日の日曜日までとしていたので、ここまで来たがタイムアップ
+
+ほんとにできている人いんのか・・とググってみて以下のサイトの
+https://github.com/Cathon/mySolutions/blob/master/overthewire/Bandit/Level_25.md
+
+Step1   before exec the command above the size of terminal should be small enough(util you can see 5 line)
+
+
+ここで察した・・・
+
+moreされている気配がなかったのは結局、moreするtext.txtが十分な長さがなかったので、普通に表示されている風に見えてしまっていた
+
+よって、ターミナル自体を小さく、上にあるとおり5行ほどにする
+
+そして、
+
+ssh -i bandit26.sshkey bandit26@localhost とすると、表示が途中で止まってくれる
+
+manはviを起動することが出きるので、止まったところで v と打つと、viが起動できるので、あとは/etc/bandit_pass/bandit26にあるパスを
+
+:e でファイルを開けるので
+
+:e /etc/bandit_pass/bandit26
+
+として、開いておわり
+
+5czgV9L3Xx8JPOyRbXh6lQbmIOWvPT6Z
