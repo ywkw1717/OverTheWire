@@ -1,5 +1,8 @@
+```sh
 $ ssh -p 2226 narnia3@narnia.labs.overthewire.org
-vaequeezee
+```
+
+password: vaequeezee
 
 ```c
 .
@@ -26,17 +29,21 @@ strcpyした時に、ファイル名が32バイト以上ならばオーバーフ
 
 
 ### A が 32
+```
 gdb-peda$ x/10wx 0xffffbf00
 0xffffbf00: 0x41414141  0x41414141  0x76656400  0x6c756e2f <- null文字(00)で/dev/nullの先頭が上書きされてしまっている
 0xffffbf10: 0x0000006c  0x00000000  0x0804868b  0x00000000
 0xffffbf20: 0xf7fab000  0xf7fab000
+```
 
 
 ### A が 31
+```
 gdb-peda$ x/10wx 0xffffbf00
 0xffffbf00:	0x41414141	0x00414141	0x7665642f	0x6c756e2f <- /dev/null
 0xffffbf10:	0x0000006c	0x00000000	0x0804868b	0x00000000
 0xffffbf20:	0xf7fab000	0xf7fab000
+```
 
 
 
