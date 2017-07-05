@@ -1,5 +1,8 @@
+```sh
 $ ssh -p 2226 narnia5@narnia.labs.overthewire.org
-faimahchiy
+```
+
+password: faimahchiy
 
 ローカル変数のiを500(0x1f4)にできれば終わり
 

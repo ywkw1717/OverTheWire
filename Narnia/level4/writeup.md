@@ -1,7 +1,8 @@
 ```sh
 $ ssh -p 2226 narnia4@narnia.labs.overthewire.org
-thaenohtai
 ```
+
+password: thaenohtai
 
 ```
 gdb-peda$ x/20wx  0x80497e0
