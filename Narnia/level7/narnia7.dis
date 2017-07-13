@@ -205,27 +205,27 @@ narnia7:     ファイル形式 elf32-i386
  804860f:	08 
  8048610:	c7 04 24 e5 87 04 08 	mov    DWORD PTR [esp],0x80487e5
  8048617:	e8 04 fe ff ff       	call   8048420 <printf@plt> # printf("hackedfunction() = %p\n\n", 0x8048706)
- 804861c:	c7 85 74 ff ff ff e0 	mov    DWORD PTR [ebp-0x8c],0x80486e0
+ 804861c:	c7 85 74 ff ff ff e0 	mov    DWORD PTR [ebp-0x8c],0x80486e0 # ptrf = goodfunction
  8048623:	86 04 08 
- 8048626:	8b 85 74 ff ff ff    	mov    eax,DWORD PTR [ebp-0x8c]
- 804862c:	8d 95 74 ff ff ff    	lea    edx,[ebp-0x8c]
+ 8048626:	8b 85 74 ff ff ff    	mov    eax,DWORD PTR [ebp-0x8c] # eax = ptrf
+ 804862c:	8d 95 74 ff ff ff    	lea    edx,[ebp-0x8c] # edx = &ptrf
  8048632:	89 54 24 08          	mov    DWORD PTR [esp+0x8],edx
  8048636:	89 44 24 04          	mov    DWORD PTR [esp+0x4],eax
  804863a:	c7 04 24 fd 87 04 08 	mov    DWORD PTR [esp],0x80487fd
- 8048641:	e8 da fd ff ff       	call   8048420 <printf@plt> # printf("before : ptrf() = %p (%p)\n", *0x80486e0, 0x80486e0)
+ 8048641:	e8 da fd ff ff       	call   8048420 <printf@plt> # printf("before : ptrf() = %p (%p)\n", ptrf, &ptrf)
  8048646:	c7 04 24 18 88 04 08 	mov    DWORD PTR [esp],0x8048818
  804864d:	e8 fe fd ff ff       	call   8048450 <puts@plt> # puts("I guess you want to come to the hackedfunction...")
  8048652:	c7 04 24 02 00 00 00 	mov    DWORD PTR [esp],0x2
  8048659:	e8 e2 fd ff ff       	call   8048440 <sleep@plt> # sleep(2)
- 804865e:	c7 85 74 ff ff ff e0 	mov    DWORD PTR [ebp-0x8c],0x80486e0
+ 804865e:	c7 85 74 ff ff ff e0 	mov    DWORD PTR [ebp-0x8c],0x80486e0 # ptrf = goodfunction
  8048665:	86 04 08 
- 8048668:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8]
+ 8048668:	8b 45 08             	mov    eax,DWORD PTR [ebp+0x8] # eax = format
  804866b:	89 44 24 08          	mov    DWORD PTR [esp+0x8],eax
- 804866f:	c7 44 24 04 80 00 00 	mov    DWORD PTR [esp+0x4],0x80
+ 804866f:	c7 44 24 04 80 00 00 	mov    DWORD PTR [esp+0x4],0x80 # sizeof buffer
  8048676:	00 
- 8048677:	8d 85 78 ff ff ff    	lea    eax,[ebp-0x88]
+ 8048677:	8d 85 78 ff ff ff    	lea    eax,[ebp-0x88] # eax = buffer
  804867d:	89 04 24             	mov    DWORD PTR [esp],eax
- 8048680:	e8 3b fe ff ff       	call   80484c0 <snprintf@plt>
+ 8048680:	e8 3b fe ff ff       	call   80484c0 <snprintf@plt> # snprintf(buffer, sizeof buffer, format)
  8048685:	8b 85 74 ff ff ff    	mov    eax,DWORD PTR [ebp-0x8c] # eax = 0x80486e0
  804868b:	ff d0                	call   eax
  804868d:	c9                   	leave  
